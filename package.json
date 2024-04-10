@@ -1,0 +1,22 @@
+{
+  "name": "damaranbot",
+  "version": "1.0.0",
+  "description": "Discord Bot that connects to my D&D campaign site.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start" : "node dist/index.js",
+    "build" : "tsup src.index.ts --minify"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.12.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.2",
+    "typescript": "^5.4.5"
+  }
+}
