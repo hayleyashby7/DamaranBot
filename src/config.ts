@@ -1,12 +1,14 @@
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;
+const { CLIENT_TOKEN, CLIENT_ID } = process.env;
 
-if (!DISCORD_TOKEN || !DISCORD_CLIENT_ID) throw new Error("Missing environment variables");
+if (!CLIENT_TOKEN || !CLIENT_ID) {
+	throw new Error('Missing environment variables');
+}
 
 export const config = {
-    DISCORD_TOKEN,
-    DISCORD_CLIENT_ID
+	CLIENT_TOKEN,
+	CLIENT_ID,
 };
