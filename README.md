@@ -1,6 +1,6 @@
 # DamaranBot
 
-Discord Bot that connects to my D&D campaign site.
+Discord Bot for my D&D campaign.
 
 ## Available Commands
 
