@@ -13,9 +13,11 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@supabase/supabase-js": "^2.42.4",
 		"axios": "^1.6.8",
 		"discord.js": "^14.12.1",
-		"dotenv": "^16.4.5"
+		"dotenv": "^16.4.5",
+		"ts-node": "^10.9.2"
 	},
 	"devDependencies": {
 		"@flydotio/dockerfile": "^0.5.4",
@@ -25,6 +27,7 @@
 		"eslint": "^8.57.0",
 		"msw": "^2.2.13",
 		"prettier": "^3.2.5",
+		"supabase": "^1.157.2",
 		"tsup": "^8.0.2",
 		"tsx": "^4.7.2",
 		"typescript": "^5.4.5",

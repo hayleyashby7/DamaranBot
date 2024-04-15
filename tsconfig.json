@@ -1,8 +1,9 @@
 {
+    "include": ["./src/*"],
+    "exclude": ["node_modules"],
     "compilerOptions": {
         "target": "ESNext",
         "module": "commonjs",
-        "rootDir": "./src",
         "outDir": "./dist",
         "resolveJsonModule": true,
         "esModuleInterop": true,
@@ -10,5 +11,11 @@
         "strict": true,
         "skipLibCheck": true,
         "types": ["vitest/globals"]
+    },
+    "ts-node": {
+        "esm": true,
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
     }
 }
