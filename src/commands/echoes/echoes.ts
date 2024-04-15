@@ -1,24 +1,29 @@
 import { CommandInteraction, ApplicationCommandType } from 'discord.js';
-import { dbClient } from '../../services/dbClient';
 import { Command } from '../../types/Command';
+import { SupabaseClient } from '@supabase/supabase-js';
 
-export const EchoesLeft: Command = {
+export const EchoesLeft = (dbClient: SupabaseClient): Command => ({
     name: 'echoes-left',
     description: 'Number of Echoes left',
     type: ApplicationCommandType.ChatInput,
     run: async (interaction: CommandInteraction) => {
-        const content = await getEchoesLeft();
+        const content = await getEchoesLeft(dbClient);
 
         await interaction.followUp({
             ephemeral: true,
             content,
         });
     },
-};
+});
 
-const getEchoesLeft = async () => {
-    const { data, error } = await dbClient.from('stats').select('value').eq('name', 'Echoes Left');
-    if (error !== null) console.error(error);
-    if (data !== null) return data.toString();
-    else return 'No data';
+const getEchoesLeft = async (dbClient: SupabaseClient): Promise<string | undefined> => {
+    try {
+        const { data } = await dbClient.from('stats').select('name, value').eq('name', 'Echoes Left');
+        if (data && data.length > 0) {
+            const { value } = data[0];
+            return value.toString();
+        }
+    } catch (error) {
+        console.error(error);
+    }
 };
