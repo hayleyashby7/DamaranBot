@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "Discord Bot that connects to my D&D campaign site.",
     "main": "index.js",
-    "type": "module",
     "scripts": {
         "dev": "tsx watch src/index.ts",
         "start": "node dist/index.js",
