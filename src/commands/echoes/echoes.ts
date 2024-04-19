@@ -50,7 +50,7 @@ export const EchoUsed: Command = {
 const getEchoesLeft = async (): Promise<string> => {
     const result: AxiosResponse = await dbClient.get(`/stats?name=eq.${ECHOES_LEFT}`, dbConfig);
 
-    const value: number = result.data.data.value;
+    const value: number = result.data[0].value;
 
     return value
         ? value.toString()
@@ -69,10 +69,14 @@ const setEchoUsed = async (): Promise<string> => {
         dbConfig,
     );
 
-    const value: number = result.data.data.value;
+    if (result.status !== 204) {
+        throw new Error('Failed to update echoes');
+    }
 
-    return value
-        ? `Echoes now remaining: ${value.toString()}`
+    const echoesLeft = await getEchoesLeft();
+
+    return echoesLeft
+        ? `Echoes now remaining: ${echoesLeft}`
         : (() => {
               throw new Error('No data');
           })();
