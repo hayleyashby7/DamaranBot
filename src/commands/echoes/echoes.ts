@@ -1,29 +1,79 @@
 import { CommandInteraction, ApplicationCommandType } from 'discord.js';
 import { Command } from '../../types/Command';
-import { SupabaseClient } from '@supabase/supabase-js';
+import { dbClient, dbConfig } from '../../services/dbClient';
+import { AxiosResponse } from 'axios';
 
-export const EchoesLeft = (dbClient: SupabaseClient): Command => ({
+export const ECHOES_LEFT = 'EchoesLeft';
+
+export const EchoesLeft: Command = {
     name: 'echoes-left',
     description: 'Number of Echoes left',
     type: ApplicationCommandType.ChatInput,
     run: async (interaction: CommandInteraction) => {
-        const content = await getEchoesLeft(dbClient);
-
-        await interaction.followUp({
-            ephemeral: true,
-            content,
-        });
-    },
-});
-
-const getEchoesLeft = async (dbClient: SupabaseClient): Promise<string | undefined> => {
-    try {
-        const { data } = await dbClient.from('stats').select('name, value').eq('name', 'Echoes Left');
-        if (data && data.length > 0) {
-            const { value } = data[0];
-            return value.toString();
+        try {
+            const content = await getEchoesLeft();
+            await interaction.followUp({
+                ephemeral: true,
+                content,
+            });
+        } catch (error) {
+            console.error(error);
+            await interaction.followUp({
+                ephemeral: true,
+                content: 'An error occurred while getting the number of echoes left.',
+            });
         }
-    } catch (error) {
-        console.error(error);
-    }
+    },
+};
+
+export const EchoUsed: Command = {
+    name: 'echo-used',
+    description: 'Updates number of echoes used',
+    type: ApplicationCommandType.ChatInput,
+    run: async (interaction: CommandInteraction) => {
+        try {
+            const content = await setEchoUsed();
+            await interaction.followUp({
+                ephemeral: true,
+                content,
+            });
+        } catch (error) {
+            console.error(error);
+            await interaction.followUp({
+                ephemeral: true,
+                content: 'An error occurred while updating the number of echoes used.',
+            });
+        }
+    },
+};
+
+const getEchoesLeft = async (): Promise<string> => {
+    const result: AxiosResponse = await dbClient.get(`/stats?name=eq.${ECHOES_LEFT}`, dbConfig);
+
+    const value: number = result.data.data.value;
+
+    return value
+        ? value.toString()
+        : (() => {
+              throw new Error('No data');
+          })();
+};
+
+const setEchoUsed = async (): Promise<string> => {
+    const currentEchoes = Number(await getEchoesLeft());
+    const updatedEchoes = currentEchoes - 1;
+
+    const result: AxiosResponse = await dbClient.patch(
+        `/stats?name=eq.${ECHOES_LEFT}`,
+        { value: updatedEchoes },
+        dbConfig,
+    );
+
+    const value: number = result.data.data.value;
+
+    return value
+        ? `Echoes now remaining: ${value.toString()}`
+        : (() => {
+              throw new Error('No data');
+          })();
 };
