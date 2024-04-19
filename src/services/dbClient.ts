@@ -1,8 +1,10 @@
 import axios, { AxiosRequestConfig, RawAxiosRequestHeaders } from 'axios';
 import { config } from '../config';
 
+export const LOCAL_HOST = 'http://localhost:3000';
+
 export const dbClient = axios.create({
-    baseURL: process.env.NODE_ENV === 'test' ? 'http://localhost:3000' : config.DB_URL,
+    baseURL: process.env.NODE_ENV === 'test' ? LOCAL_HOST : config.DB_URL,
 });
 
 export const dbConfig: AxiosRequestConfig = {
