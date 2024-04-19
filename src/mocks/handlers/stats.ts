@@ -1,5 +1,5 @@
 import { HttpResponse, http } from 'msw';
-import { config } from '../../config';
+import { LOCAL_HOST } from '../../services/dbClient';
 import { ECHOES_LEFT } from '../../commands/echoes/echoes';
 
 const echoes_data = {
@@ -10,7 +10,7 @@ const echoes_data = {
 };
 
 export const handlers = [
-    http.get(`${config.DB_URL}/stats`, ({ request }) => {
+    http.get(`${LOCAL_HOST}/stats`, ({ request }) => {
         const url = new URL(request.url);
         const name = url.searchParams.get('name');
 
@@ -22,7 +22,7 @@ export const handlers = [
         }
     }),
 
-    http.patch(`${config.DB_URL}/stats`, async ({ request }) => {
+    http.patch(`${LOCAL_HOST}/stats`, async ({ request }) => {
         const updatedValue = await request.json();
         const url = new URL(request.url);
         const name = url.searchParams.get('name');
