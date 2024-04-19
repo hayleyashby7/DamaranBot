@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const { NODE_ENV, CLIENT_TOKEN, CLIENT_ID, KANKA_TOKEN, DB_TOKEN } = process.env;
+const { NODE_ENV, CLIENT_TOKEN, CLIENT_ID, KANKA_TOKEN, DB_TOKEN, DB_URL } = process.env;
 
 if (NODE_ENV === 'production') {
     if (!CLIENT_TOKEN || !CLIENT_ID) {
@@ -13,7 +13,7 @@ if (NODE_ENV === 'production') {
         throw new Error('Missing service variables');
     }
 
-    if (!DB_TOKEN) {
+    if (!DB_TOKEN || !DB_URL) {
         throw new Error('Missing database variables');
     }
 }
@@ -23,4 +23,5 @@ export const config = {
     CLIENT_ID,
     KANKA_TOKEN,
     DB_TOKEN,
+    DB_URL,
 };
