@@ -11,6 +11,16 @@ jobs:
     build:
         name: Node.js CI
         runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres:13
+                env:
+                    POSTGRES_USER: ${{ secrets.PG_USER }}
+                    POSTGRES_PASSWORD: ${{ secrets.PG_PW }}
+                    POSTGRES_DB: ${{ secrets.PG_DB }}
+                ports:
+                    - 5432:5432
+                options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
         steps:
             - uses: actions/checkout@v4
             - name: Use Node.js
@@ -21,7 +31,13 @@ jobs:
             - run: npm run build --if-present
             - run: npm test
               env:
-                  DB_URL: ${{ secrets.DB_URL }}
+                  NODE_ENV: 'production'
+                  CLIENT_TOKEN: ${{ secrets.CLIENT_TOKEN }}
+                  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+                  KANKA_TOKEN: ${{ secrets.KANKA_TOKEN }}
+                  DB_TOKEN: ${{ secrets.DB_TOKEN }}
+                  DB_URL: postgres://postgres:postgres@localhost:5432/test
+
     deploy:
         name: Fly Deploy
         needs: build
@@ -34,3 +50,4 @@ jobs:
             - run: flyctl deploy --remote-only
               env:
                   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+                  DB_URL: ${{ secrets.DB_URL}}

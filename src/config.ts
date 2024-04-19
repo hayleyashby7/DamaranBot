@@ -1,6 +1,8 @@
 import dotenv from 'dotenv';
 
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+}
 
 const { NODE_ENV, CLIENT_TOKEN, CLIENT_ID, KANKA_TOKEN, DB_TOKEN, DB_URL } = process.env;
 
