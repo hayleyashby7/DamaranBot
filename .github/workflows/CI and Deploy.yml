@@ -36,7 +36,7 @@ jobs:
                   CLIENT_ID: ${{ secrets.CLIENT_ID }}
                   KANKA_TOKEN: ${{ secrets.KANKA_TOKEN }}
                   DB_TOKEN: ${{ secrets.DB_TOKEN }}
-                  DB_URL: postgres://postgres:postgres@localhost:5432/test
+                  DB_URL: postgres://postgres:postgres@localhost:5432/testDB
 
     deploy:
         name: Fly Deploy
